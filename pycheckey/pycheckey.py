@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class KeyPairEnsurer:
+class KeyEnsurer:
     """Dataclass that allows to deeply check that keys exist.
     """
 
@@ -14,9 +14,10 @@ class KeyPairEnsurer:
         if '.' in key:
             key, rest = key.split('.', 1)
         if key not in data:
-            raise BuildException(f'"{key}" not found in the configuration.')
+            return False
         if rest:
             self.key_exists(data[key], rest)
+        return True
 
     def validate(self):
         for key in self.required_keys:
