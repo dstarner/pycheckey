@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import typing
 
 
 @dataclass
@@ -8,6 +9,8 @@ class KeyEnsurer:
 
     data: typing.Union[typing.Dict, 'collections.OrderedDict[str, typing.Any]']
     required_keys: typing.List[str]
+
+    missing = []
 
     def key_exists(self, data, key):
         rest = ''
@@ -20,5 +23,9 @@ class KeyEnsurer:
         return True
 
     def validate(self):
+        self.missing = []
         for key in self.required_keys:
-            self.key_exists(self.data, key)
+            if not self.key_exists(self.data, key):
+                self.missing.append(key)
+        return not self.missing
+                
