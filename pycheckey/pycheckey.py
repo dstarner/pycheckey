@@ -19,7 +19,7 @@ class KeyEnsurer:
         if key not in data:
             return False
         if rest:
-            self.key_exists(data[key], rest)
+            return self.key_exists(data[key], rest)
         return True
 
     def validate(self):
@@ -27,5 +27,5 @@ class KeyEnsurer:
         for key in self.required_keys:
             if not self.key_exists(self.data, key):
                 self.missing.append(key)
-        return not self.missing
+        return len(self.missing) == 0
                 
